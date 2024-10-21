@@ -55,7 +55,7 @@ The `echo: false` option disables the printing of code (only output is displayed
  1. Hacer push en repositorio
  1. Activar Github pages
  
- # Modelos lineales mixtos
+# Modelos lineales mixtos
  
  ## Importar datos
  
