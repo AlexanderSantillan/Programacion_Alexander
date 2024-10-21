@@ -63,7 +63,7 @@ The `echo: false` option disables the printing of code (only output is displayed
 ```{r}
 source('https://inkaverse.com/setup.r')
 
-url <- "https://docs.google.com/spreadsheets/d/15r7ZwcZZHbEgltlF6gSFvCTFA-CFzVBWwg3mFlRyKPs/edit?pli=1&gid=172957346#gid=172957346"
+url <- "https://docs.google.com/spreadsheets/d/15r7ZwcZZHbEgltlF6gSFvCTFA-CFzVBWwg3mFlRyKPs/edit?gid=172957346#gid=172957346"
 
 gs <- url %>% 
   as_sheets_id()
@@ -71,8 +71,6 @@ gs <- url %>%
 fb <- gs %>% 
   range_read("fb")
 
-
-str(fb)
 ```
 
 ## Modelo lineal: lfa
@@ -95,14 +93,11 @@ plot_diag(modelo)
 ### boxplot
 ```{r}
 
-ggplot(fb, aes(x = geno, y = hi, colour = riego)) +
+ggplot(fb, aes(x = geno, y = lfa, colour = riego)) +
   geom_boxplot(outlier.colour = "red", outlier.shape = 16, outlier.size = 2) +
   labs(title = "Boxplot con interacción de niveles de riego y genotipo",
        x = "Interacción Riego y Genotipo",
-       y = "Area foliar  (cm^2)")
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Inclinar etiquetas del eje X
-
+       y = "Area Folicar (cm^2)")
 ```
 
 ## Modelo lineal: hi
