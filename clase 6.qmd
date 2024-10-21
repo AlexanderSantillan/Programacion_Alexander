@@ -148,5 +148,52 @@ model <- remove_outliers(data = fb
 model
 ```
 
+# Comparación de medias usando Tukey
+
+```{r}
+modelo <- lm(formula = lfa ~ bloque + riego + geno + riego*geno
+          , data = fb)
+
+anova(modelo)
+
+library(agricolae)
+tukey_result <- HSD.test(modelo,
+                         c("geno","riego")
+                         , group = TRUE)
+print(tukey_result)
+
+plot(tukey_result)
+
+str(tukey_result)
+
+tukey_result
+
+library(tidyverse)
+
+grupos <- tukey_result$groups %>% 
+  rownames_to_column("tratamientos") %>% 
+  separate(tratamientos, into = c("geno","riego")
+           , sep = ":")
+
+str(grupos)
+
+```
+
+## Gráficas con ggplot2
+
+```{r}
+ggplot(grupos,aes(x = geno, y = lfa, fill = riego)) +
+  geom_bar(stat = "identity", position = "dodge", color =
+"black") +
+labs (x = "Genotipo", y = "LFA", fi11 = "Riego") +
+theme_minimal() +
+theme (axis.text.x = element_text(angle = 45, hjust = 1))
+ggtitle("Gráfico de barras: LFA por genotipo y riego")
+```
+
+
+
+
+
 
 
