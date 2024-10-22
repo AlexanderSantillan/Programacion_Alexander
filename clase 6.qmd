@@ -148,7 +148,7 @@ model <- remove_outliers(data = fb
 model
 ```
 
-# Comparación de medias usando Tukey
+# Agricolae: Comparación de medias usando Tukey
 
 ```{r}
 modelo <- lm(formula = lfa ~ bloque + riego + geno + riego*geno
@@ -189,7 +189,69 @@ labs (x = "Genotipo", y = "LFA", fi11 = "Riego") +
 theme_minimal() +
 theme (axis.text.x = element_text(angle = 45, hjust = 1))
 ggtitle("Gráfico de barras: LFA por genotipo y riego")
+
 ```
+
+
+```{r}
+ggplot(grupos, aes(x = geno, y = lfa, fill = riego)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_text(aes(label = groups),  
+            position = position_dodge(width = 0.9), 
+            vjust = -0.3) +  
+  labs(title = "Efecto de Geno y Riego en LFA",
+       x = "Genotipo",
+       y = "LFA") +
+  theme_minimal() +
+  scale_fill_discrete(name = "Riego") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+# emmeans: comparación de medias
+
+```{r}
+
+modelo <-lme4::lmer(hi ~  (1 | bloque) + geno*riego
+                          , data = fb)
+
+anova(modelo)
+
+cm1 <- emmeans(modelo, ~ geno | riego) %>% 
+  cld(Letters = letters, reserved = T)
+cm1
+
+cm2 <- emmeans(modelo, ~ riego | geno) %>% 
+  cld(Letters = letters, reserved = T)
+cm2
+
+cm3 <- emmeans(modelo, ~ riego * geno) %>% 
+  cld(Letters = letters, reserved = T)
+cm3
+
+cm1_df <- as.data.frame(cm1)
+```
+
+## Gráfico
+
+```{r}
+library(ggplot2)
+
+dtcm <- as.data.frame (cm2) %>% 
+  rename(sig = ".group")
+
+ggplot(dtcm, aes(x = geno, y = emmean, fill = riego)) + 
+  geom_bar(stat = "identity", position = "dodge", color =
+"black") + 
+  geom_text(aes (label = sig, y = emmean),
+           position = position_dodge(width = 0.9),
+           vjust = 0) +
+  labs (x = "Genotipo", y = "HI", fill = "Riego") +
+  theme_minimal() +
+  theme (axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  ggtitle("Gráfico de barras: HI por genotipo y riego")
+
+```
+
 
 
 
