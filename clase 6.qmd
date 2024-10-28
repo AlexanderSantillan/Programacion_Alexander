@@ -283,6 +283,28 @@ pairs.panels(x=.
 
 ## PCA: Análisis de componentes principales 
 
+```{r}
+library(FactoMineR)
+library(cowplot)
+mv <- fb %>% 
+  group_by(riego, geno) %>% 
+  summarise(across(where(is.numeric), ~ mean(., na.rm = TRUE))) %>% 
+  PCA(scale.unit = T, quali.sup = c(1:4), graph = F)
+
+
+p1 <- plot(mv
+     , choix="ind"
+     , habillage=1
+     , label = "ind"
+     )
+
+
+p2 <- plot(mv
+     , choix="var")
+
+list(p1, p2) %>% 
+  plot_grid(plotlist = ., nrow = 1)
+```
 
 
 
