@@ -71,6 +71,8 @@ gs <- url %>%
 fb <- gs %>% 
   range_read("fb")
 
+str(fb)
+
 ```
 
 ## Modelo lineal: lfa
@@ -252,7 +254,34 @@ ggplot(dtcm, aes(x = geno, y = emmean, fill = riego)) +
 
 ```
 
+# Análisis multivariado
+```{r}
 
+str(fb)
+
+```
+
+## correlación
+
+```{r}
+
+library(psych)
+
+fb %>% 
+  select_if(is.numeric) %>% 
+  dplyr::select(!c("block")) %>% 
+
+pairs.panels(x=.
+             , hist
+             , col="red"
+             , pch = 21 
+             , stars = TRUE
+             , scale = FALSE
+             , lm = TRUE
+             )
+```
+
+## PCA: Análisis de componentes principales 
 
 
 
